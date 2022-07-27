@@ -24,7 +24,7 @@ def index():
 
 
 @app.route('/newBlock', methods = ['POST'])
-def newBlock(block):
+def newBlock():
     global currentBlock
     data = request.form
     print("data",data)
