@@ -26,9 +26,10 @@ def index():
 @app.route('/newBlock', methods = ['POST'])
 def newBlock(block):
     global currentBlock
-    data = request.form["newBlock"]
-    currentBlock = data
-    print("new block",currentBlock,data)
+    data = request.form
+    print("data",data)
+    # currentBlock = data
+    # print("new block",currentBlock,data)
     
 # @sock.route('/updatedReserves')
 # def updatedReserves(ws):
