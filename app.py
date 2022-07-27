@@ -28,15 +28,13 @@ def newBlock():
     global currentBlock
     data = request.json
     currentBlock = data["newBlock"]
-    print("new block",currentBlock,data)
-    return 1
-    
-# @sock.route('/updatedReserves')
-# def updatedReserves(ws):
-#     global lastBlock
-#     data = ws.receive()
-#     lastBlock = data
-#     print("updatedReserves lastBlock",lastBlock,data)
+    return ''
+@app.route('/updatedReserves', methods = ['POST'])
+def newBlock():
+    global lastBlock
+    data = request.json
+    lastBlock = data["updatedReserves"]
+    return ''
 
 
 @sock.route('/log')
