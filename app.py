@@ -8,6 +8,8 @@ sock = Sock(app)
 app.config['SOCK_SERVER_OPTIONS'] = {'ping_interval': 5}
 
 
+sentTxs = {}
+
 @app.route('/')
 def index():
     data = {
@@ -38,8 +40,9 @@ def log(ws):
         print('subprocess executed')
         for line in process.stdout:
             line = line.rstrip()
-            print(line)
-            ws.send(line)
+            if line not in sentTxs:
+                ws.send(line)
+                sentTxs[line]=1
             # try:
             #     payload = {
             #         'title': 'journalctl',
