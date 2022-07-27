@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+from crypt import methods
+from flask import Flask, render_template, request
+
 from flask_sock import Sock
 import subprocess
 import json
@@ -9,6 +11,8 @@ app.config['SOCK_SERVER_OPTIONS'] = {'ping_interval': 5}
 
 
 sentTxs = {}
+currentBlock = 0
+lastBlock = 0
 
 @app.route('/')
 def index():
@@ -19,12 +23,19 @@ def index():
     return render_template('base.html', data=data)
 
 
-@sock.route('/echo')
-def echo(ws):
-    while True:
-        data = ws.receive()
-        ws.send(data)
-        print(data)
+@app.route('/newBlock', methods = ['POST'])
+def newBlock(block):
+    global currentBlock
+    data = request.form["newBlock"]
+    currentBlock = data
+    print("new block",currentBlock,data)
+    
+# @sock.route('/updatedReserves')
+# def updatedReserves(ws):
+#     global lastBlock
+#     data = ws.receive()
+#     lastBlock = data
+#     print("updatedReserves lastBlock",lastBlock,data)
 
 
 @sock.route('/log')
@@ -41,8 +52,9 @@ def log(ws):
         for line in process.stdout:
             line = line.rstrip()
             if line not in sentTxs:
-                ws.send(line)
-                sentTxs[line]=1
+                if currentBlock>0 and lastBlock>0 and currentBlock==lastBlock:
+                    ws.send(line)
+                    sentTxs[line]=1
             # try:
             #     payload = {
             #         'title': 'journalctl',
