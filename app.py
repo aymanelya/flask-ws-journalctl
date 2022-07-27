@@ -51,7 +51,7 @@ def log(ws):
         for line in process.stdout:
             line = line.rstrip()
             if line not in sentTxs:
-                if currentBlock>0 and lastBlock>0 and currentBlock==lastBlock:
+                if currentBlock!=0 and lastBlock!=0 and currentBlock==lastBlock:
                     ws.send(line)
                     sentTxs[line]=1
             # try:
