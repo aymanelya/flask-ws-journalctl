@@ -27,11 +27,11 @@ def echo(ws):
 
 @sock.route('/log')
 def log(ws):
-    data = ws.receive()
-    payload = json.loads(data)
+    # data = ws.receive()
+    # payload = json.loads(data)
 
     with subprocess.Popen(
-            [f'journalctl -u {payload["name"]} -f'],
+            ['''journalctl -u osmosisd  -f  | grep -oP 'module=mempool msg={"Txs":\["\K([^ ]+)(?="\])\''''],
             stdout=subprocess.PIPE, shell=True, bufsize=1,
             universal_newlines=True
     ) as process:
@@ -39,19 +39,20 @@ def log(ws):
         for line in process.stdout:
             line = line.rstrip()
             print(line)
-            try:
-                payload = {
-                    'title': 'journalctl',
-                    'message': line,
-                    'success': True
-                }
-                ws.send(json.dumps(payload))
-            except BaseException as e:
-                payload = {
-                    'error': str(e) + '\n',
-                    'success': False
-                }
-                ws.send(payload)
+            ws.send(line)
+            # try:
+            #     payload = {
+            #         'title': 'journalctl',
+            #         'message': line,
+            #         'success': True
+            #     }
+            #     ws.send(json.dumps(payload))
+            # except BaseException as e:
+            #     payload = {
+            #         'error': str(e) + '\n',
+            #         'success': False
+            #     }
+            #     ws.send(payload)
     print('WS closed')
 
 
