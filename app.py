@@ -30,7 +30,7 @@ def newBlock():
     currentBlock = data["newBlock"]
     return ''
 @app.route('/updatedReserves', methods = ['POST'])
-def newBlock():
+def updatedReserves():
     global lastBlock
     data = request.json
     lastBlock = data["updatedReserves"]
