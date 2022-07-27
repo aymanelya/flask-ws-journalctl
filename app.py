@@ -27,9 +27,9 @@ def index():
 def newBlock():
     global currentBlock
     data = request.json
-    print("data",data)
-    # currentBlock = data
-    # print("new block",currentBlock,data)
+    currentBlock = data["newBlock"]
+    print("new block",currentBlock,data)
+    return 1
     
 # @sock.route('/updatedReserves')
 # def updatedReserves(ws):
