@@ -43,7 +43,7 @@ def log(ws):
     # payload = json.loads(data)
 
     with subprocess.Popen(
-            ['''journalctl -u osmosisd  -f  | grep -oP 'module=mempool msg={"Txs":\["\K([^ ]+)(?="\])\''''],
+            ["""journalctl -u osmosisd  -f  | grep -oP 'module=mempool msg={"Txs":\["\K([^ ]+)(?="\])'"""],
             stdout=subprocess.PIPE, shell=True, bufsize=1,
             universal_newlines=True
     ) as process:
